@@ -161,6 +161,14 @@ DataStorage <- R6::R6Class( # nolint object_name_linter
             tmp_result <- .x  %>%
               jsonlite::fromJSON() %>%
               purrr::compact() %>%
+              # If resulted list contains vector with length > 1
+              # as.data.frame() will produce multiple rows
+              # and tmp_result will have more rows than original data frame,
+              # ending up with error:
+              # "Assigned data must be compatible with existing data"
+              lapply(FUN = function(field) {
+                paste(field, collapse = ", ")
+              }) %>%
               as.data.frame()  %>%
               # All un-nested columns have to be character type.
               dplyr::mutate(dplyr::across(
