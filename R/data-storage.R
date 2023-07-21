@@ -51,8 +51,8 @@ DataStorage <- R6::R6Class( # nolint object_name_linter
 
       db_data <- private$read_data(date_from, date_to, self$event_bucket) %>%
         dplyr::mutate(
-          date = lubridate::as_date(.data$time),
-          time = lubridate::as_datetime(.data$time)
+          date = lubridate::as_date(.data$time, tz = Sys.timezone()),
+          time = lubridate::as_datetime(.data$time, tz = Sys.timezone())
         )
 
       # Ensure standard value types always return on resutls
