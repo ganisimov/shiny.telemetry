@@ -855,7 +855,7 @@ prepare_admin_panel_components <- function(
       tidyr::fill("username") %>%
       dplyr::summarise(
         username = unique(.data$username),
-        session_start_date = min(.data$time),
+        session_start_date = as.character(min(.data$time)),
         session_duration = round(difftime(max(.data$time), min(.data$time), units = "secs")),
         session_actions = dplyr::n()
       )
